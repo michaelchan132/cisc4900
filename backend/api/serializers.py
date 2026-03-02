@@ -12,12 +12,6 @@ class UserSerializer(serializers.ModelSerializer):
         user = User.objects.create_user(**validated_data)
         return user
 
-class RestaurantSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Restaurants
-        fields = ["dba", "boro", "street", "zipcode", "phone", "cuisine_description"]
-        extra_kwargs = {}
-
 class InspectionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Inspection
@@ -29,3 +23,12 @@ class ReviewSerializer(serializers.ModelSerializer):
         model = Review
         fields = ["author", "restaurant", "rating", "comment", "created_at"]
         extra_kwargs = {"author": {"read_only": True}}
+
+class RestaurantSerializer(serializers.ModelSerializer):
+    inspections = InspectionSerializer(many=True, read_only=True)
+    reviews = ReviewSerializer(many=True, read_only=True)
+    
+    class Meta:
+        model = Restaurants
+        fields = ["dba", "boro", "street", "zipcode", "phone", "cuisine_description"]
+        extra_kwargs = {}
