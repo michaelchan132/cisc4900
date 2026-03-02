@@ -30,7 +30,7 @@ SECRET_KEY = 'django-insecure-&0mk_xmtl@8edkp=ox&m281%gmz(9e1pl7c7=+th+)wezspq%_
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [*]
+ALLOWED_HOSTS = ["*"]
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
@@ -56,7 +56,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     "api",
-    "rest_framework"
+    "rest_framework",
     "corsheaders"
 ]
 
