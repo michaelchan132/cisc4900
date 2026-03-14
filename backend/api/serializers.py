@@ -15,13 +15,13 @@ class UserSerializer(serializers.ModelSerializer):
 class InspectionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Inspection
-        fields = ["restaurant", "inspection_date", "score", "grade"]
+        fields = ["id", "restaurant", "inspection_date", "score", "grade"]
         extra_kwargs = {}
 
 class ReviewSerializer(serializers.ModelSerializer):
     class Meta:
         model = Review
-        fields = ["author", "restaurant", "rating", "comment", "created_at"]
+        fields = ["id", "author", "author_username", "restaurant", "rating", "comment", "created_at"]
         extra_kwargs = {"author": {"read_only": True}}
 
 class RestaurantSerializer(serializers.ModelSerializer):
@@ -30,5 +30,14 @@ class RestaurantSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Restaurants
-        fields = ["dba", "boro", "street", "zipcode", "phone", "cuisine_description"]
+        fields = [
+            "id", 
+            "camis"
+            "dba", 
+            "boro", 
+            "street", 
+            "zipcode", 
+            "phone", 
+            "cuisine_description"
+        ]
         extra_kwargs = {}
