@@ -1,4 +1,3 @@
-import { useEffect, useRef } from "react"
 import RestaurantCard from "./RestaurantCard"
 import SearchBar from "./SearchBar"
 
@@ -11,33 +10,6 @@ function RestaurantList({
   hasMore,
   onLoadMore,
 }) {
-  const loadMoreRef = useRef(null)
-
-  useEffect(() => {
-    if (!hasMore || loading || loadingMore || searchTerm) {
-      return
-    }
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
-          onLoadMore()
-        }
-      },
-      { threshold: 1 },
-    )
-
-    const currentRef = loadMoreRef.current
-    if (currentRef) {
-      observer.observe(currentRef)
-    }
-
-    return () => {
-      if (currentRef) {
-        observer.unobserve(currentRef)
-      }
-    }
-  }, [hasMore, loading, loadingMore, onLoadMore, searchTerm])
 
   return (
     <div>
@@ -49,7 +21,11 @@ function RestaurantList({
         <RestaurantCard key={restaurant.id} restaurant={restaurant} />
       ))}
       {!searchTerm && loadingMore && <p>Loading more restaurants...</p>}
-      {!searchTerm && hasMore && <div ref={loadMoreRef} style={{ height: "1px" }} />}
+      {!searchTerm && hasMore && !loadingMore && (
+        <button type="button" onClick={onLoadMore}>
+          Load more
+        </button>
+      )}
     </div>
   )
 }
