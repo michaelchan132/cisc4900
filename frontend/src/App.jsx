@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useMemo, useState, useCallback } from "react"
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom"
 import api from "./api"
 import Navbar from "./components/NavBar"
@@ -23,22 +23,43 @@ function RegisterAndLogout() {
 function App() {
   const [restaurants, setRestaurants] = useState([])
   const [searchTerm, setSearchTerm] = useState("")
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(false)
+  const [loadingMore, setLoadingMore] = useState(false)
+  const [nextPageUrl, setNextPageUrl] = useState("/api/restaurants/")
+  const [hasMore, setHasMore] = useState(true)
 
-  useEffect(() => {
-    const fetchRestaurants = async () => {
-      try {
-        const response = await api.get("/api/restaurants/")
-        setRestaurants(response.data)
-      } catch (error) {
-        console.log(error)
-      } finally {
-        setLoading(false)
-      }
+  const fetchRestaurants = useCallback(async () => {
+    if (!nextPageUrl || loading || loadingMore) {
+      return
     }
 
+    const isInitialLoad = restaurants.length === 0
+    if (isInitialLoad) {
+      setLoading(true)
+    } else {
+      setLoadingMore(true)
+    }
+
+    try {
+      const response = await api.get(nextPageUrl)
+      setRestaurants((current) => [...current, ...(response.data.results || [])])
+      setNextPageUrl(response.data.next)
+      setHasMore(Boolean(response.data.next))
+    } catch (error) {
+      console.log(error)
+    } finally {
+      if (isInitialLoad) {
+        setLoading(false)
+      } else {
+        setLoadingMore(false)
+      }
+    }
+     }, [loading, loadingMore, nextPageUrl, restaurants.length])
+
+  useEffect(() => {
+
     fetchRestaurants()
-  }, [])
+  }, [fetchRestaurants])
 
   const filteredRestaurants = useMemo(() => {
     const query = searchTerm.toLowerCase()
@@ -84,12 +105,15 @@ function App() {
               searchTerm={searchTerm}
               onSearch={setSearchTerm}
               loading={loading}
+              loadingMore={loadingMore}
+              hasMore={hasMore && !searchTerm}
+              onLoadMore={fetchRestaurants}
             />
           }
         />
         <Route
           path="/restaurants/:id"
-          element={<RestaurantDetail restaurants={restaurants} onAddReview={addReview} />}
+          element={<RestaurantDetail onAddReview={addReview} />}
         />
         <Route path="*" element={<NotFound />} />
       </Routes>
