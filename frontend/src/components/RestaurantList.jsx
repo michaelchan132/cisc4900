@@ -4,6 +4,7 @@ import SearchBar from "./SearchBar"
 function RestaurantList({
   restaurants,
   searchTerm,
+  suggestions,
   onSearch,
   loading,
   loadingMore,
@@ -14,14 +15,14 @@ function RestaurantList({
   return (
     <div>
       <h1>Restaurant List</h1>
-      <SearchBar value={searchTerm} onSearch={onSearch} />
+      <SearchBar value={searchTerm} suggestions={suggestions} onSearch={onSearch} />
       {loading && <p>Loading restaurants...</p>}
       {!loading && restaurants.length === 0 && <p>No restaurants found.</p>}
       {restaurants.map((restaurant) => (
         <RestaurantCard key={restaurant.id} restaurant={restaurant} />
       ))}
-      {!searchTerm && loadingMore && <p>Loading more restaurants...</p>}
-      {!searchTerm && hasMore && !loadingMore && (
+      {loadingMore && <p>Loading more restaurants...</p>}
+      {hasMore && !loadingMore && (
         <button type="button" onClick={onLoadMore}>
           Load more
         </button>

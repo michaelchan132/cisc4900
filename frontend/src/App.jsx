@@ -105,14 +105,14 @@ function App() {
     [restaurants],
   )
 
-  const filteredRestaurants = useMemo(() => {
+  const searchSuggestions = useMemo(() => {
     const query = searchTerm.trim().toLowerCase()
     if(!query){
-      return restaurants
+      return []
     }
 
-    return searchRestaurantsByPrefix(restaurantTrie, query)
-  }, [restaurants, restaurantTrie, searchTerm])
+    return searchRestaurantsByPrefix(restaurantTrie, query).slice(0, 8)
+  }, [restaurantTrie, searchTerm])
 
   const addReview = (restaurantId, review) => {
     setRestaurants((current) =>
@@ -147,12 +147,13 @@ function App() {
           path="/restaurants"
           element={
             <RestaurantList
-              restaurants={filteredRestaurants}
+              restaurants={restaurants}
               searchTerm={searchTerm}
+              suggestions={searchSuggestions}
               onSearch={setSearchTerm}
               loading={loading}
               loadingMore={loadingMore}
-              hasMore={hasMore && !searchTerm}
+              hasMore={hasMore}
               onLoadMore={fetchRestaurants}
             />
           }

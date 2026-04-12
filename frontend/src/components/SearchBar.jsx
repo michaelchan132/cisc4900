@@ -1,4 +1,4 @@
-function SearchBar({value, suggestions, onSearch}) {
+function SearchBar({value, suggestions = [], onSearch}) {
     return (
     <div>
         <input 
