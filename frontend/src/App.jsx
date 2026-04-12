@@ -10,6 +10,45 @@ import Home from "./pages/Home"
 import NotFound from "./pages/NotFound"
 import ProtectedRoute from "./components/ProtectedRoute"
 
+
+function createTrieNode() {
+  return { children: {}, restaurants: [] }
+}
+
+function buildRestaurantTrie(restaurants) {
+  const root = createTrieNode()
+
+  restaurants.forEach((restaurant) => {
+    const name = restaurant.dba?.toLowerCase() ?? ""
+    let node = root
+    node.restaurants.push(restaurant)
+
+    for (const char of name) {
+      if (!node.children[char]) {
+        node.children[char] = createTrieNode()
+      }
+      node = node.children[char]
+      node.restaurants.push(restaurant)
+    }
+  })
+
+  return root
+}
+
+function searchRestaurantsByPrefix(trie, prefix) {
+  let node = trie
+
+  for (const char of prefix.toLowerCase()) {
+    node = node.children[char]
+    if (!node) {
+      return []
+    }
+  }
+
+  return node.restaurants
+}
+
+
 function Logout() {
   localStorage.clear()
   return <Navigate to="/login" />
@@ -61,12 +100,19 @@ function App() {
     fetchRestaurants()
   }, [fetchRestaurants])
 
+  const restaurantTrie = useMemo (
+    () => buildRestaurantTrie(restaurants), 
+    [restaurants],
+  )
+
   const filteredRestaurants = useMemo(() => {
-    const query = searchTerm.toLowerCase()
-    return restaurants.filter((restaurant) =>
-      restaurant.dba.toLowerCase().includes(query),
-    )
-  }, [restaurants, searchTerm])
+    const query = searchTerm.trim().toLowerCase()
+    if(!query){
+      return restaurants
+    }
+
+    return searchRestaurantsByPrefix(restaurantTrie, query)
+  }, [restaurants, restaurantTrie, searchTerm])
 
   const addReview = (restaurantId, review) => {
     setRestaurants((current) =>
