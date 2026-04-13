@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom"
+
 function SearchBar({value, suggestions = [], onSearch}) {
     return (
     <div>
@@ -9,7 +11,9 @@ function SearchBar({value, suggestions = [], onSearch}) {
         {value.trim() && suggestions.length > 0 && (
             <ul>
                 {suggestions.map((restaurant) => (
-                    <li key={restaurant.id}>{restaurant.dba}</li>
+                    <li key={restaurant.id}>
+                        <Link to={`/restaurants/${restaurant.id}`}>{restaurant.dba}</Link>
+                    </li>
                 ))}
             </ul>
         )}
