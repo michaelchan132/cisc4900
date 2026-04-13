@@ -65,6 +65,7 @@ function App() {
   const [totalPages, setTotalPages] = useState(1)
   const [loading, setLoading] = useState(false)
   const [fetchError, setFetchError] = useState("")
+  const [hasLoaded, setHasLoaded] = useState(false)
 
   const fetchRestaurants = useCallback(async (page = 1) => {
 
