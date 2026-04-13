@@ -62,28 +62,27 @@ function RegisterAndLogout() {
 function App() {
   const [restaurants, setRestaurants] = useState([])
   const [searchTerm, setSearchTerm] = useState("")
-  const [loading, setLoading] = useState(false)
-  const [loadingMore, setLoadingMore] = useState(false)
-  const [nextPageUrl, setNextPageUrl] = useState("/api/restaurants/")
-  const [hasMore, setHasMore] = useState(true)
+  const [currentPage, setCurrentPage] = useState(1)
+  const [totalPages, setTotalPages] = useState(1)
 
-  const fetchRestaurants = useCallback(async () => {
-    if (!nextPageUrl || loading || loadingMore) {
+  const fetchRestaurants = useCallback(async (page = 1) => {
+    if (loading) {
       return
     }
 
-    const isInitialLoad = restaurants.length === 0
-    if (isInitialLoad) {
-      setLoading(true)
-    } else {
-      setLoadingMore(true)
-    }
+    setLoading(true)
 
     try {
-      const response = await api.get(nextPageUrl)
-      setRestaurants((current) => [...current, ...(response.data.results || [])])
-      setNextPageUrl(response.data.next)
-      setHasMore(Boolean(response.data.next))
+      const response = await api.get("/api/restaurants/", {
+        params: { page }
+      })
+      const restaurantResults = response.data.results || []
+      const restaurantCount = response.data.count || 0
+      const pageSize = restaurantResults.length || 20
+
+      setRestaurants(restaurantResults)
+      setCurrentPage(page)
+      setTotalPages(Math.max(1, Math.ceil(restaurantCount / pageSize)))
     } catch (error) {
       console.log(error)
     } finally {
@@ -93,7 +92,7 @@ function App() {
         setLoadingMore(false)
       }
     }
-     }, [loading, loadingMore, nextPageUrl, restaurants.length])
+     }, [loading])
 
   useEffect(() => {
 
@@ -152,9 +151,9 @@ function App() {
               suggestions={searchSuggestions}
               onSearch={setSearchTerm}
               loading={loading}
-              loadingMore={loadingMore}
-              hasMore={hasMore}
-              onLoadMore={fetchRestaurants}
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={fetchRestaurants}
             />
           }
         />

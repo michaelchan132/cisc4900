@@ -7,10 +7,11 @@ function RestaurantList({
   suggestions,
   onSearch,
   loading,
-  loadingMore,
-  hasMore,
-  onLoadMore,
+  currentPage,
+  totalPages,
+  onPageChange,
 }) {
+  const pageNumbers = Array.from({ length: totalPages }, (_, index) => index + 1)
 
   return (
     <div>
@@ -21,11 +22,20 @@ function RestaurantList({
       {restaurants.map((restaurant) => (
         <RestaurantCard key={restaurant.id} restaurant={restaurant} />
       ))}
-      {loadingMore && <p>Loading more restaurants...</p>}
-      {hasMore && !loadingMore && (
-        <button type="button" onClick={onLoadMore}>
-          Load more
-        </button>
+      {!loading && totalPages > 1 && (
+        <nav aria-label="Restaurant list pagniation">
+          {pageNumbers.map((pageNumber) => (
+            <button
+              key={pageNumber}
+              type="button"
+              onClick={() => onPageChange(pageNumber)}
+              disabled={currentPage === pageNumber}
+              aria-current={currentPage === pageNumber ? "page" : undefined}
+              >
+                  {pageNumber}
+              </button>
+          ))}
+        </nav>
       )}
     </div>
   )
