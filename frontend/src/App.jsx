@@ -86,11 +86,7 @@ function App() {
     } catch (error) {
       console.log(error)
     } finally {
-      if (isInitialLoad) {
-        setLoading(false)
-      } else {
-        setLoadingMore(false)
-      }
+      setLoading(false)
     }
      }, [loading])
 
