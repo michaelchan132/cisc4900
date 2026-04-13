@@ -13,7 +13,10 @@ function RestaurantList({
   hasLoaded,
   onPageChange,
 }) {
-  const pageNumbers = Array.from({ length: totalPages }, (_, index) => index + 1)
+  const maxVisiblePageButtons = 9
+  const visiblePageCount = Math.min(totalPages, maxVisiblePageButtons)
+  const pageNumbers = Array.from({ length: visiblePageCount }, (_, index) => index + 1)
+  const showPageOverflow = totalPages > maxVisiblePageButtons
 
   return (
     <div>
