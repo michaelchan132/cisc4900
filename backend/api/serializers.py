@@ -26,6 +26,7 @@ class InspectionSerializer(serializers.ModelSerializer):
 
 class ReviewSerializer(serializers.ModelSerializer):
     author_username = serializers.CharField(source="author.username", read_only=True)
+    restaurant_name = serializers.CharField(source="restaurant.dba", read_only=True)
 
     class Meta:
         model = Review
@@ -37,6 +38,7 @@ class ReviewSerializer(serializers.ModelSerializer):
             "rating", 
             "comment", 
             "created_at",
+            "restaurant_name",
         ]
         extra_kwargs = {"author": {"read_only": True}}
 

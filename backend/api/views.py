@@ -42,3 +42,10 @@ class DeleteReview(generics.DestroyAPIView):
     def get_queryset(self):
         user = self.request.user
         return Review.objects.filter(author=user)
+
+class MyReviewList(generics.ListAPIView):
+    serializer_class = ReviewSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return Review.object.filter(author=self.request.user).order_by("-created_at")
