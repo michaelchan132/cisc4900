@@ -14,9 +14,13 @@ function RestaurantList({
   onPageChange,
 }) {
   const maxVisiblePageButtons = 9
-  const visiblePageCount = Math.min(totalPages, maxVisiblePageButtons)
-  const pageNumbers = Array.from({ length: visiblePageCount }, (_, index) => index + 1)
-  const showPageOverflow = totalPages > maxVisiblePageButtons
+  const halfWindow = Math.floor(maxVisiblePageButtons / 2)
+  const maxStartPage = Math.max(1, totalPages - maxVisiblePageButtons + 1)
+  const startPage = Math.min(Math.max(1, currentPage - halfWindow), maxStartPage)
+  const endPage = Math.min(totalPages, startPage + maxVisiblePageButtons - 1)
+  const pageNumbers = Array.from({ length: endPage - startPage + 1}, (_, index) => startPage + index)
+  const showLeadingOverflow = startPage > 1
+  const showTrailingOverflow = endPage < totalPages
 
   return (
     <div>
@@ -37,6 +41,7 @@ function RestaurantList({
             >
               Previous
             </button>
+            {showLeadingOverflow && <span aria-hidden="true">...</span>}
           {pageNumbers.map((pageNumber) => (
             <button
               key={pageNumber}
@@ -48,6 +53,7 @@ function RestaurantList({
               {pageNumber}
             </button>
           ))}
+          {showTrailingOverflow && <span aria-hidden="true">...</span>}
           <button
             type="button"
             onClick={() => onPageChange(currentPage + 1)}
