@@ -64,6 +64,7 @@ function App() {
   const [searchTerm, setSearchTerm] = useState("")
   const [currentPage, setCurrentPage] = useState(1)
   const [totalPages, setTotalPages] = useState(1)
+  const [loading, setLoading] = useState(false)
 
   const fetchRestaurants = useCallback(async (page = 1) => {
     if (loading) {
