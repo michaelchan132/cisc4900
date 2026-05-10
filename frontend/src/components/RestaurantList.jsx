@@ -12,6 +12,10 @@ function RestaurantList({
   totalPages,
   hasLoaded,
   onPageChange,
+  borough,
+  inspection,
+  onBoroughChange,
+  onInspectionChange,
 }) {
   const maxVisiblePageButtons = 9
   const halfWindow = Math.floor(maxVisiblePageButtons / 2)
@@ -25,7 +29,15 @@ function RestaurantList({
   return (
     <div className="page-content">
       <h1>Restaurant List</h1>
-      <SearchBar value={searchTerm} suggestions={suggestions} onSearch={onSearch} />
+      <SearchBar 
+        value={searchTerm} 
+        suggestions={suggestions} 
+        onSearch={onSearch} 
+        borough={borough}
+        inspection={inspection}
+        onBoroughChange={onBoroughChange}
+        onInspectionChange={onInspectionChange}
+      />
       {loading && <p>Loading restaurants...</p>}
       {!loading && error && <p>{error}</p>}
       {!loading && hasLoaded && !error && restaurants.length === 0 && <p>No restaurants found</p>}

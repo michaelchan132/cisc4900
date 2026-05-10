@@ -76,15 +76,21 @@ function App() {
   const [loading, setLoading] = useState(false)
   const [fetchError, setFetchError] = useState("")
   const [hasLoaded, setHasLoaded] = useState(false)
+  const [boroughFilter, setBoroughFilter] = useState("")
+  const [inspectionFilter, setInspectionFilter] = useState("")
 
-  const fetchRestaurants = useCallback(async (page = 1) => {
+  const fetchRestaurants = useCallback(async (page = 1, borough = boroughFilter, inspection = inspectionFilter) => {
 
     setLoading(true)
     setFetchError("")
 
     try {
       const response = await api.get("/api/restaurants/", {
-        params: { page },
+        params: { 
+          page,
+          ...(borough ? { boro: borough} : {}),
+          ...(inspection ? { inspection } : {}),
+        },
       })
       const isPaginatedResponse = 
       response.data && typeof response.data === "object" && Array.isArray(response.data.results)
@@ -112,11 +118,11 @@ function App() {
       setLoading(false)
       setHasLoaded(true)
     }
-     }, [])
+     }, [boroughFilter, inspectionFilter])
 
   useEffect(() => {
 
-    fetchRestaurants()
+    fetchRestaurants(1)
   }, [fetchRestaurants])
 
   const restaurantTrie = useMemo (
@@ -146,6 +152,16 @@ function App() {
         }
       }),
     )
+  }
+  
+  const handleBoroughChange = (boro) => {
+    setBoroughFilter(boro)
+    fetchRestaurants(1, boro, inspectionFilter)
+  }
+
+  const handleInspectionChange = (inspection) => {
+    setInspectionFilter(inspection)
+    fetchRestaurants(1, boroughFilter, inspection)
   }
 
   return (
@@ -180,6 +196,10 @@ function App() {
               totalPages={totalPages}
               hasLoaded={hasLoaded}
               onPageChange={fetchRestaurants}
+              borough={boroughFilter}
+              inspection={inspectionFilter}
+              onBoroughChange={handleBoroughChange}
+              onInspectionChange={handleInspectionChange}
             />
             </PageLayout>
           }

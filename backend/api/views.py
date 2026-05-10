@@ -22,6 +22,16 @@ class RestaurantList(generics.ListAPIView):
     serializer_class = RestaurantSerializer
     permission_classes = [AllowAny]
     pagination_class = RestaurantPagination
+    
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        boro = self.request.query_params.get("boro", "").strip()
+        inspection = self.request.query_params.get("inspection", "").strip()
+        if boro:
+            queryset = queryset.filter(boro__iexact=boro)
+        if inspection:
+            queryset = queryset.filter(inspections__grade__icontains=inspection)
+        return queryset.distinct()
 
 class RestaurantDetail(generics.RetrieveAPIView):
     queryset = Restaurants.objects.all()
