@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, useCallback } from "react"
+import { useEffect, useState, useCallback } from "react"
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom"
 import api from "./api"
 import RestaurantList from "./components/RestaurantList"
@@ -10,44 +10,6 @@ import Profile from "./pages/Profile"
 import NotFound from "./pages/NotFound"
 import ProtectedRoute from "./components/ProtectedRoute"
 import NavBar from "./components/NavBar"
-
-function createTrieNode() {
-  return { children: {}, restaurants: [] }
-}
-
-function buildRestaurantTrie(restaurants) {
-  const root = createTrieNode()
-
-  restaurants.forEach((restaurant) => {
-    const name = restaurant.dba?.toLowerCase() ?? ""
-    let node = root
-    node.restaurants.push(restaurant)
-
-    for (const char of name) {
-      if (!node.children[char]) {
-        node.children[char] = createTrieNode()
-      }
-      node = node.children[char]
-      node.restaurants.push(restaurant)
-    }
-  })
-
-  return root
-}
-
-function searchRestaurantsByPrefix(trie, prefix) {
-  let node = trie
-
-  for (const char of prefix.toLowerCase()) {
-    node = node.children[char]
-    if (!node) {
-      return []
-    }
-  }
-
-  return node.restaurants
-}
-
 
 function Logout() {
   localStorage.clear()
@@ -79,6 +41,7 @@ function App() {
   const [boroughFilter, setBoroughFilter] = useState("")
   const [inspectionFilter, setInspectionFilter] = useState("")
   const [sortBy, setSortBy] = useState("id_asc")
+  const [searchSuggestions, setSearchSuggestions] = useState([])
 
 
   const fetchRestaurants = useCallback(async (page = 1, borough = boroughFilter, inspection = inspectionFilter, sort = sortBy) => {
@@ -128,19 +91,34 @@ function App() {
     fetchRestaurants(1)
   }, [fetchRestaurants])
 
-  const restaurantTrie = useMemo (
-    () => buildRestaurantTrie(restaurants),
-    [restaurants],
-  )
+  useEffect(() => {
+    const query = searchTerm.trim()
 
-  const searchSuggestions = useMemo(() => {
-    const query = searchTerm.trim().toLowerCase()
-    if(!query){
-      return []
+    if (!query) {
+      setSearchSuggestions([])
+      return
     }
 
-    return searchRestaurantsByPrefix(restaurantTrie, query).slice(0, 8)
-  }, [restaurantTrie, searchTerm])
+    const fetchSuggestions = async () => {
+      try {
+        const response = await api.get("/api/restaurants/", {
+          params: { search: query, page_size: 8 },
+        })
+        const suggestions = Array.isArray(response.data?.results)
+          ? response.data.results
+          : Array.isArray(response.data)
+            ? response.data
+            : []
+        setSearchSuggestions(suggestions)
+      } catch (error) {
+        console.log(error)
+        setSearchSuggestions([])
+      }
+
+    }
+
+    fetchSuggestions()
+  }, [searchTerm])
 
   const addReview = (restaurantId, review) => {
     setRestaurants((current) =>

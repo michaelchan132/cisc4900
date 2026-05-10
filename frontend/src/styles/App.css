@@ -270,3 +270,13 @@ a:hover { text-decoration: underline; }
   margin: 0;
   color: #b91c1c;
 }
+
+.search-bar__suggestions {
+  list-style: none;
+  margin: 0.5rem 0 0;
+  padding: 0;
+}
+
+.search-bar__suggestion-item {
+  margin: 0.25rem 0;
+}

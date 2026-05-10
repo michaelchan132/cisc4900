@@ -26,8 +26,11 @@ class RestaurantList(generics.ListAPIView):
     
     def get_queryset(self):
         queryset = super().get_queryset()
+        search = self.request.query_params.get("search", "").strip()
         boro = self.request.query_params.get("boro", "").strip()
         inspection = self.request.query_params.get("inspection", "").strip()
+        if search:
+            queryset = queryset.filter(dba__icontains=search)
         if boro:
             queryset = queryset.filter(boro__iexact=boro)
         if inspection:

@@ -12,7 +12,7 @@ function SearchBar({
     onSortByChange,
 }) {
     return (
-    <div>
+    <div className="search-bar">
         <input 
         placeholder="Search Restaurants"
         value={value}
@@ -42,9 +42,9 @@ function SearchBar({
             <option value="rating_asc">Sort: Rating (Low-High)</option>
         </select>
         {value.trim() && suggestions.length > 0 && (
-            <ul>
+            <ul className="search-bar__suggestions">
                 {suggestions.map((restaurant) => (
-                    <li key={restaurant.id}>
+                    <li className="search-bar__suggestion-item" key={restaurant.id}>
                         <Link to={`/restaurants/${restaurant.id}`}>{restaurant.dba}</Link>
                     </li>
                 ))}
