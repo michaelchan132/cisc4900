@@ -143,3 +143,130 @@ a:hover { text-decoration: underline; }
   opacity: 0.55;
   cursor: not-allowed;
 }
+
+.restaurant-detail {
+  display: grid;
+  gap: 1rem;
+}
+
+.restaurant-detail__status,
+.restaurant-detail--empty {
+  text-align: center;
+}
+
+.restaurant-detail__header {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  align-items: flex-start;
+}
+
+.restaurant-detail__name {
+  margin: 0;
+  font-size: 1.65rem;
+}
+
+.restaurant-detail__cuisine {
+  margin: 0.25rem 0 0;
+  color: #334155;
+}
+
+.restaurant-detail__badge {
+  color: #1d4ed8;
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  border-radius: 999px;
+  padding: 0.2rem 0.6rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.restaurant-detail__meta {
+  color: #475569;
+}
+
+.restaurant-detail__meta p {
+  margin: 0.1rem 0;
+}
+
+.restaurant-detail__reviews,
+.restaurant-detail__add-review {
+  border-color: #dbeafe;
+  box-shadow: none;
+}
+
+.restaurant-detail__back-link {
+  justify-self: start;
+  font-weight: 600;
+}
+
+.review-list__title {
+  margin: 0 0 0.75rem;
+}
+
+.review-list__empty {
+  margin: 0;
+  color: #64748b;
+}
+
+.review-item {
+  border-top: 1px solid #e2e8f0;
+  padding: 0.7rem 0;
+}
+
+.review-item:first-of-type {
+  border-top: none;
+  padding-top: 0;
+}
+
+.review-item__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.6rem;
+}
+
+.review-item__rating {
+  color: #1d4ed8;
+  font-weight: 600;
+}
+
+.review-item__comment {
+  margin: 0.25rem 0 0;
+  color: #334155;
+}
+
+.add-review-form {
+  display: grid;
+  gap: 0.7rem;
+}
+
+.add-review-form h3 {
+  margin: 0;
+}
+
+.add-review-form__field {
+  display: grid;
+  gap: 0.3rem;
+}
+
+.add-review-form input {
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 0.5rem 0.6rem;
+}
+
+.add-review-form__button {
+  justify-self: start;
+  border: 1px solid #2563eb;
+  background: #2563eb;
+  color: #fff;
+  border-radius: 8px;
+  padding: 0.45rem 0.75rem;
+  cursor: pointer;
+}
+
+.add-review-form__error {
+  margin: 0;
+  color: #b91c1c;
+}

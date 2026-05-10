@@ -30,9 +30,9 @@ function AddReviewForm({ restaurantId, onAddReview }) {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form className="add-review-form" onSubmit={handleSubmit}>
       <h3>Add Review</h3>
-      <div>
+      <div className="add-review-form__field">
         <label htmlFor="rating">Rating</label>
         <input
           id="rating"
@@ -43,7 +43,7 @@ function AddReviewForm({ restaurantId, onAddReview }) {
           onChange={(event) => setRating(event.target.value)}
         />
       </div>
-      <div>
+      <div className="add-review-form__field">
         <label htmlFor="comment">Comment</label>
         <input
           id="comment"
@@ -51,8 +51,8 @@ function AddReviewForm({ restaurantId, onAddReview }) {
           onChange={(event) => setComment(event.target.value)}
         />
       </div>
-      <button type="submit">Add Review</button>
-      {error && <p>{error}</p>}
+      <button className="add-review-form__button" type="submit">Add Review</button>
+      {error && <p className="add_review-form__error">{error}</p>}
     </form>
   )
 }
