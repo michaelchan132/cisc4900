@@ -9,7 +9,7 @@ import Home from "./pages/Home"
 import Profile from "./pages/Profile"
 import NotFound from "./pages/NotFound"
 import ProtectedRoute from "./components/ProtectedRoute"
-
+import NavBar from "./components/NavBar"
 
 function createTrieNode() {
   return { children: {}, restaurants: [] }
@@ -57,6 +57,15 @@ function Logout() {
 function RegisterAndLogout() {
   localStorage.clear()
   return <Register />
+}
+
+function PageLayout ({ children }) {
+  return (
+    <div className="page-shell">
+      <NavBar />
+      {children}
+    </div>
+  )
 }
 
 function App() {
@@ -145,9 +154,7 @@ function App() {
         <Route
           path="/"
           element={
-            <ProtectedRoute>
-              <Home />
-            </ProtectedRoute>
+            <PageLayout><ProtectedRoute><Home /></ProtectedRoute></PageLayout>
           }
         />
         <Route path="/login" element={<Login />} />
@@ -156,15 +163,13 @@ function App() {
         <Route
           path="/profile"
           element={
-            <ProtectedRoute>
-              <Profile />
-            </ProtectedRoute>
+            <PageLayout><ProtectedRoute><Profile /></ProtectedRoute></PageLayout>
           }
           />
         <Route
           path="/restaurants"
           element={
-            <RestaurantList
+            <PageLayout><RestaurantList
               restaurants={restaurants}
               searchTerm={searchTerm}
               suggestions={searchSuggestions}
@@ -176,13 +181,14 @@ function App() {
               hasLoaded={hasLoaded}
               onPageChange={fetchRestaurants}
             />
+            </PageLayout>
           }
         />
         <Route
           path="/restaurants/:id"
-          element={<RestaurantDetail onAddReview={addReview} />}
+          element={<PageLayout><RestaurantDetail onAddReview={addReview} /></PageLayout>}
         />
-        <Route path="*" element={<NotFound />} />
+        <Route path="*" element={<PageLayout><NotFound /></PageLayout>} />
       </Routes>
     </BrowserRouter>
   )

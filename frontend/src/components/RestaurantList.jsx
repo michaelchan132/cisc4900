@@ -23,17 +23,19 @@ function RestaurantList({
   const showTrailingOverflow = endPage < totalPages
 
   return (
-    <div>
+    <div className="page-content">
       <h1>Restaurant List</h1>
       <SearchBar value={searchTerm} suggestions={suggestions} onSearch={onSearch} />
       {loading && <p>Loading restaurants...</p>}
       {!loading && error && <p>{error}</p>}
       {!loading && hasLoaded && !error && restaurants.length === 0 && <p>No restaurants found</p>}
+      <div className="stack">
       {restaurants.map((restaurant) => (
         <RestaurantCard key={restaurant.id} restaurant={restaurant} />
       ))}
+      </div>
       {!loading && totalPages > 1 && (
-        <nav aria-label="Restaurant list pagination">
+        <nav className="pagination" aria-label="Restaurant list pagination">
           <button
             type="button"
             onClick={() => onPageChange(currentPage - 1)}

@@ -2,7 +2,7 @@ import { Link } from "react-router-dom"
 
 function Home() {
   return (
-    <main>
+    <main className="page-content panel">
       <h1>Welcome</h1>
       <p>Search restaurants, read reviews, and share your own dining experiences.</p>
       <p>
