@@ -65,7 +65,63 @@ a:hover { text-decoration: underline; }
   gap: 1rem;
 }
 
-.restaurant-card h2 { margin: 0 0 0.4rem; }
+.restaurant-card {
+  border: 1px solid #dbeafe;
+  transition: transform 0.16s ease, box-shadow 0.16s ease, border-color 0.16s ease;
+}
+
+.restaurant-card:hover {
+  transform: translateY(-2px);
+  border-color: #93c5fd;
+  box-shadow: 0 14px 32px rgba(37, 99, 235, 0.16);
+}
+
+.restaurant-card__header {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  align-items: flex-start;
+  margin-bottom: 0.5rem;
+}
+
+.restaurant-card h2 {
+  margin: 0;
+  font-size: 1.15rem;
+  line-height: 1.35;
+}
+
+.restaurant-card__rating {
+  flex-shrink: 0;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #1d4ed8;
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  border-radius: 999px;
+  padding: 0.2rem 0.55rem;
+}
+
+.restaurant-card__cuisine {
+  margin: 0;
+  color: #475569;
+}
+
+.restaurant-card__footer {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 0.8rem;
+}
+
+.restaurant-card__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-weight: 600;
+}
+
+.restaurant-card__link::after {
+  content: "→";
+}
 
 .pagination {
   display: flex;
