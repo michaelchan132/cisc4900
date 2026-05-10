@@ -38,6 +38,8 @@ function SearchBar({
             <option value="name_desc">Sort: Name (Z-A)</option>
             <option value="boro_asc">Sort: Borough (A-Z)</option>
             <option value="boro_desc">Sort: Borough (Z-A)</option>
+            <option value="rating_desc">Sort: Rating (High-Low)</option>
+            <option value="rating_asc">Sort: Rating (Low-High)</option>
         </select>
         {value.trim() && suggestions.length > 0 && (
             <ul>

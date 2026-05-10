@@ -92,7 +92,7 @@ function App() {
           page,
           ...(borough ? { boro: borough} : {}),
           ...(inspection ? { inspection } : {}),
-          ...App(sort ? { sort } : {}),
+          ...(sort ? { sort } : {}),
         },
       })
       const isPaginatedResponse = 

@@ -45,6 +45,7 @@ class ReviewSerializer(serializers.ModelSerializer):
 class RestaurantSerializer(serializers.ModelSerializer):
     inspections = InspectionSerializer(many=True, read_only=True)
     reviews = ReviewSerializer(many=True, read_only=True)
+    average_rating = serializers.FloatField(read_only=True)
     
     class Meta:
         model = Restaurants
@@ -59,5 +60,6 @@ class RestaurantSerializer(serializers.ModelSerializer):
             "cuisine_description",
             "inspections",
             "reviews",
+            "average_rating",
         ]
         extra_kwargs = {}

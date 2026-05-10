@@ -5,6 +5,7 @@ from rest_framework.pagination import PageNumberPagination
 from .serializers import UserSerializer, RestaurantSerializer, InspectionSerializer, ReviewSerializer
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from .models import Restaurants, Inspection, Review
+from django.db.models import Avg
 
 # Create your views here.
 class CreateUserView(generics.CreateAPIView):
@@ -18,7 +19,7 @@ class RestaurantPagination(PageNumberPagination):
     max_page_size = 100
 
 class RestaurantList(generics.ListAPIView):
-    queryset = Restaurants.objects.all().order_by("id")
+    queryset = Restaurants.objects.annotate(average_rating=Avg("reviews__rating")).order_by("id")
     serializer_class = RestaurantSerializer
     permission_classes = [AllowAny]
     pagination_class = RestaurantPagination
@@ -32,13 +33,15 @@ class RestaurantList(generics.ListAPIView):
         if inspection:
             queryset = queryset.filter(inspections__grade__icontains=inspection)
         sort = self.request.query_params.get("sort", "").strip()
-        sort_options- {
+        sort_options = {
             "name_asc": "dba",
             "name_desc": "-dba",
             "boro_asc": "boro",
             "boro_desc": "-boro",
             "id_asc": "id",
             "id_desc": "-id",
+            "rating_asc": "average_rating",
+            "rating_desc": "-average_rating",
         }
         order_by_field = sort_options.get(sort)
         if order_by_field:
