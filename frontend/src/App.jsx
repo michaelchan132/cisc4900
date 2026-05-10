@@ -78,8 +78,10 @@ function App() {
   const [hasLoaded, setHasLoaded] = useState(false)
   const [boroughFilter, setBoroughFilter] = useState("")
   const [inspectionFilter, setInspectionFilter] = useState("")
+  const [sortBy, setSortBy] = useState("id_asc")
 
-  const fetchRestaurants = useCallback(async (page = 1, borough = boroughFilter, inspection = inspectionFilter) => {
+
+  const fetchRestaurants = useCallback(async (page = 1, borough = boroughFilter, inspection = inspectionFilter, sort = sortBy) => {
 
     setLoading(true)
     setFetchError("")
@@ -90,6 +92,7 @@ function App() {
           page,
           ...(borough ? { boro: borough} : {}),
           ...(inspection ? { inspection } : {}),
+          ...App(sort ? { sort } : {}),
         },
       })
       const isPaginatedResponse = 
@@ -118,7 +121,7 @@ function App() {
       setLoading(false)
       setHasLoaded(true)
     }
-     }, [boroughFilter, inspectionFilter])
+     }, [boroughFilter, inspectionFilter, sortBy])
 
   useEffect(() => {
 
@@ -156,12 +159,17 @@ function App() {
   
   const handleBoroughChange = (boro) => {
     setBoroughFilter(boro)
-    fetchRestaurants(1, boro, inspectionFilter)
+    fetchRestaurants(1, boro, inspectionFilter, sortBy)
   }
 
   const handleInspectionChange = (inspection) => {
     setInspectionFilter(inspection)
-    fetchRestaurants(1, boroughFilter, inspection)
+    fetchRestaurants(1, boroughFilter, inspection, sortBy)
+  }
+
+  const handleSortByChange = (sort) => {
+    setSortBy(sort)
+    fetchRestaurants(1, boroughFilter, inspectionFilter, sort)
   }
 
   return (
@@ -200,6 +208,8 @@ function App() {
               inspection={inspectionFilter}
               onBoroughChange={handleBoroughChange}
               onInspectionChange={handleInspectionChange}
+              sortBy={sortBy}
+              onSortByChange={handleSortByChange}
             />
             </PageLayout>
           }

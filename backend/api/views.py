@@ -31,6 +31,19 @@ class RestaurantList(generics.ListAPIView):
             queryset = queryset.filter(boro__iexact=boro)
         if inspection:
             queryset = queryset.filter(inspections__grade__icontains=inspection)
+        sort = self.request.query_params.get("sort", "").strip()
+        sort_options- {
+            "name_asc": "dba",
+            "name_desc": "-dba",
+            "boro_asc": "boro",
+            "boro_desc": "-boro",
+            "id_asc": "id",
+            "id_desc": "-id",
+        }
+        order_by_field = sort_options.get(sort)
+        if order_by_field:
+            queryset = queryset.order_by(order_by_field, "id")
+        
         return queryset.distinct()
 
 class RestaurantDetail(generics.RetrieveAPIView):

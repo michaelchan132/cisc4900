@@ -16,6 +16,8 @@ function RestaurantList({
   inspection,
   onBoroughChange,
   onInspectionChange,
+  sortBy,
+  onSortByChange,
 }) {
   const maxVisiblePageButtons = 9
   const halfWindow = Math.floor(maxVisiblePageButtons / 2)
@@ -37,6 +39,8 @@ function RestaurantList({
         inspection={inspection}
         onBoroughChange={onBoroughChange}
         onInspectionChange={onInspectionChange}
+        sortBy={sortBy}
+        onSortByChange={onSortByChange}
       />
       {loading && <p>Loading restaurants...</p>}
       {!loading && error && <p>{error}</p>}

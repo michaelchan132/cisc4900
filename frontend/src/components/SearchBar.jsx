@@ -8,6 +8,8 @@ function SearchBar({
     inspection,
     onBoroughChange,
     onInspectionChange,
+    sortBy,
+    onSortByChange,
 }) {
     return (
     <div>
@@ -29,6 +31,14 @@ function SearchBar({
             value={inspection}
             onChange={(event) => onInspectionChange(event.target.value)}
         />
+        <select value={sortBy} onChange={(event) => onSortByChange(event.target.value)}>
+            <option value="id_asc">Sort: ID (Ascending)</option>
+            <option value="id_desc">Sort: ID (Descending)</option>
+            <option value="name_asc">Sort: Name (A-Z)</option>
+            <option value="name_desc">Sort: Name (Z-A)</option>
+            <option value="boro_asc">Sort: Borough (A-Z)</option>
+            <option value="boro_desc">Sort: Borough (Z-A)</option>
+        </select>
         {value.trim() && suggestions.length > 0 && (
             <ul>
                 {suggestions.map((restaurant) => (
