@@ -38,6 +38,8 @@ function RestaurantDetail({ onAddReview }) {
     onAddReview(restaurant.id, review)
   }
 
+  const inspections = restaurant?.inspections || []
+
   if (loading) {
     return <p className="restaurant-detail__status">Loading restaurant details...</p>
   }
@@ -68,6 +70,23 @@ function RestaurantDetail({ onAddReview }) {
           <p>{restaurant.street}</p>
           <p>{restaurant.zipcode}</p>
         </div>
+
+        <div className="restaurant-detail__inspections panel">
+          <h3>Inspection Grades</h3>
+          {inspections.length === 0 ? (
+            <p className="restaurant-detail__inspections-empty">No inspection grades available.</p>
+          ) : (
+            <ul className="restaurant-detail__inspections-list">
+              {inspections.slice(0, 5).map((inspection) => (
+                <li key={inspection.id} className="restaurant-detail__inspections-item">
+                  <span>{inspection.inspection_date}</span>
+                  <strong>{inspection.grade || "N/A"}</strong>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+
 
         <div className="restaurant-detail__reviews panel">
           <ReviewList reviews={restaurant.reviews || []} />

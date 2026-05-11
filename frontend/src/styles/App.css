@@ -190,7 +190,8 @@ a:hover { text-decoration: underline; }
 }
 
 .restaurant-detail__reviews,
-.restaurant-detail__add-review {
+.restaurant-detail__add-review,
+.restaurant-detail__inspections {
   border-color: #dbeafe;
   box-shadow: none;
 }
@@ -279,4 +280,33 @@ a:hover { text-decoration: underline; }
 
 .search-bar__suggestion-item {
   margin: 0.25rem 0;
+}
+
+.restaurant-detail__inspections h3 {
+  margin: 0 0 0.6rem;
+}
+
+.restaurant-detail__inspections-empty {
+  margin: 0;
+  color: #64748b;
+}
+
+.restaurant-detail__inspections-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.4rem;
+}
+
+.restaurant-detail__inspections-item {
+  display: flex;
+  justify-content: space-between;
+  border-top: 1px solid #e2e8f0;
+  padding-top: 0.4rem;
+}
+
+.restaurant-detail__inspections-item:first-child {
+  border-top: none;
+  padding-top: 0;
 }
