@@ -77,4 +77,4 @@ class MyReviewList(generics.ListAPIView):
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        return Review.object.filter(author=self.request.user).order_by("-created_at")
+        return Review.objects.filter(author=self.request.user).order_by("-created_at")
